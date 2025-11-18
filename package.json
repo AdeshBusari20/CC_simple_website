@@ -1,7 +1,7 @@
 {
   "name": "student-portal",
   "version": "1.0.0",
-  "description": "Student Management Portal with MongoDB",
+  "description": "Student Management Portal with MongoDB, Express, and JWT Authentication",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -11,16 +11,18 @@
     "student",
     "portal",
     "mongodb",
-    "express"
+    "express",
+    "nodejs",
+    "api"
   ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.6.3",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
-    "cors": "^2.8.5"
+    "mongoose": "^7.6.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
