@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .header h2 {
+            font-size: 28px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .link-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .link-text a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .link-text a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .success {
+            color: #27ae60;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            color: white;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .sidebar-header i {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .menu-item.active {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .menu-item i {
+            margin-right: 12px;
+            width: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .welcome-text h1 {
+            color: #333;
+            font-size: 28px;
+        }
+
+        .welcome-text p {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            padding: 8px 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .courses-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            color: #333;
+        }
+
+        .view-all-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .courses-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .courses-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .courses-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .action-btn {
+            padding: 6px 15px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .action-btn:hover {
+            background: #229954;
+        }
+
+        .action-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .courses-table {
+                font-size: 14px;
+            }
+
+            .courses-table th,
+            .courses-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Registration Form -->
+    <div id="registerForm" class="container">
+        <div class="header">
+            <h2><i class="fas fa-user-graduate"></i> Student Registration</h2>
+        </div>
+        <div class="form-container">
+            <form onsubmit="register(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="regFullName" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="regEmail" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="regPhone" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="regPassword" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="regConfirmPassword" required>
+                    </div>
+                </div>
+                <div id="regError" class="error"></div>
+                <div id="regSuccess" class="success"></div>
+                <button type="submit" class="btn">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+                <div class="link-text">
+                    Already have an account? <a href="#" onclick="showLogin()">Login Here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginForm" class="container" style="display: none;">
+        <div class="header">
+            <h2><i class="fas fa-sign-in-alt"></i> Student Login</h2>
+        </div>
+        <div class="form-container">
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+                <div id="loginError" class="error"></div>
+                <button type="submit" class="btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <div class="link-text">
+                    Don't have an account? <a href="#" onclick="showRegister()">Register Here</a>
+                    <br><br>
+                    <a href="#" onclick="alert('Please contact admin for password reset')">Forgot password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-university"></i>
+                <h3>University Portal</h3>
+                <p id="sidebarUser"></p>
+            </div>
+            <div class="sidebar-menu">
+                <div class="menu-item active" onclick="showDashboard()">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item" onclick="showCourses()">
+                    <i class="fas fa-book"></i>
+                    <span>Courses</span>
+                </div>
+                <div class="menu-item" onclick="showMyCourses()">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>My Courses</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>Schedule</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Grades</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="welcome-text">
+                    <h1 id="welcomeText">Welcome back, User!</h1>
+                    <p>Here's what's happening with your courses today.</p>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Registered Courses</h3>
+                    <div class="stat-value" id="registeredCourses">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Credits</h3>
+                    <div class="stat-value" id="totalCredits">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Enrollment Progress</h3>
+                    <div class="stat-value" id="enrollmentProgress">0%</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Upcoming Classes</h3>
+                    <div class="stat-value" id="upcomingClasses">0</div>
+                </div>
+            </div>
+
+            <div class="courses-section" id="coursesSection">
+                <div class="section-header">
+                    <h2><i class="fas fa-book"></i> Available Courses</h2>
+                    <button class="view-all-btn" onclick="showCourses()">View All Courses</button>
+                </div>
+                <table class="courses-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Title</th>
+                            <th>Instructor</th>
+                            <th>Schedule</th>
+                            <th>Credits</th>
+                            <th>Availability</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="coursesTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let token = localStorage.getItem('token');
+        let currentUser = null;
+
+        // Check if user is logged in
+        if (token) {
+            loadDashboard();
+        }
+
+        function showRegister() {
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('loginForm').style.display = 'none';
+        }
+
+        function showLogin() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        async function register(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('regFullName').value;
+            const email = document.getElementById('regEmail').value;
+            const phoneNumber = document.getElementById('regPhone').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            document.getElementById('regError').textContent = '';
+            document.getElementById('regSuccess').textContent = '';
+
+            if (password !== confirmPassword) {
+                document.getElementById('regError').textContent = 'Passwords do not match';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, email, phoneNumber, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('regSuccess').textContent = 'Registration successful! Redirecting to login...';
+                    setTimeout(() => showLogin(), 2000);
+                } else {
+                    document.getElementById('regError').textContent = data.message;
+                }
+            } catch (error) {
+                document.getElementById('regError').textContent = 'Server error. Please try again.';
+            }
+        }
+
+        async function login(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            document.getElementById('loginError').textContent = '';
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    token = data.token;
+                    currentUser = data.user;
+                    loadDashboard();
+                } else {
+                    document.getElementById('loginError').textContent = data.message;
+                }
+            } catch (error) {
+                document.getElementById('loginError').textContent = 'Server error. Please try again.';
+            }
+        }
+
+        async function loadDashboard() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+
+            currentUser = JSON.parse(localStorage.getItem('user'));
+            
+            document.getElementById('welcomeText').textContent = `Welcome back, ${currentUser.fullName}!`;
+            document.getElementById('sidebarUser').textContent = currentUser.fullName;
+            document.getElementById('userAvatar').textContent = currentUser.fullName.charAt(0).toUpperCase();
+
+            await loadCourses();
+            await loadEnrolledCourses();
+        }
+
+        async function loadCourses() {
+            try {
+                const response = await fetch(`${API_URL}/courses`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const courses = await response.json();
+                const tbody = document.getElementById('coursesTableBody');
+                tbody.innerHTML = '';
+
+                courses.forEach(course => {
+                    const row = `
+                        <tr>
+                            <td>${course.code}</td>
+                            <td>${course.title}</td>
+                            <td>${course.instructor}</td>
+                            <td>${course.schedule}</td>
+                            <td>${course.credits}</td>
+                            <td>${course.availability}</td>
+                            <td>
+                                <button class="action-btn" onclick="enrollCourse('${course._id}')">
+                                    <i class="fas fa-plus"></i> Register
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Error loading courses:', error);
+            }
+        }
+
+        async function loadEnrolledCourses() {
+            try {
+                const response = await fetch(`${API_URL}/enrolled-courses`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const enrollments = await response.json();
+                
+                document.getElementById('registeredCourses').textContent = enrollments.length;
+                
+                let totalCredits = 0;
+                enrollments.forEach(enrollment => {
+                    if (enrollment.courseId) {
+                        totalCredits += enrollment.courseId.credits;
+                    }
+                });
+                
+                document.getElementById('totalCredits').textContent = totalCredits;
+                document.getElementById('enrollmentProgress').textContent = 
+                    Math.round((totalCredits / 15) * 100) + '%';
+                document.getElementById('upcomingClasses').textContent = enrollments.length;
+            } catch (error) {
+                console.error('Error loading enrolled courses:', error);
+            }
+        }
+
+        async function enrollCourse(courseId) {
+            try {
+                const response = await fetch(`${API_URL}/enroll`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ courseId })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Enrolled successfully!');
+                    await loadEnrolledCourses();
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert('Server error. Please try again.');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            location.reload();
+        }
+
+        function showDashboard() {
+            loadDashboard();
+        }
+
+        function showCourses() {
+            loadCourses();
+        }
+
+        function showMyCourses() {
+            alert('My Courses page coming soon!');
+        }
+    </script>
+</body>
+</html>
