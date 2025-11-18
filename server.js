@@ -13,12 +13,29 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/student_portal';
-mongoose.connect(MONGODB_URI, {
+// const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/student_portal';
+// mongoose.connect(MONGODB_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// }).then(() => console.log('MongoDB Connected'))
+//   .catch(err => console.log('MongoDB Error:', err));
+// MongoDB Connection (Atlas)
+const mongoose = require('mongoose');
+
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error("❌ ERROR: MONGO_URI is NOT set in Render!");
+  process.exit(1);
+}
+
+mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log('MongoDB Error:', err));
+  useUnifiedTopology: true,
+})
+.then(() => console.log("✅ Connected to MongoDB Atlas"))
+.catch(err => console.error("❌ MongoDB Error:", err));
+
 
 // User Schema
 const userSchema = new mongoose.Schema({
