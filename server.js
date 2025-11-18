@@ -20,7 +20,7 @@ app.use(express.static('public'));
 // }).then(() => console.log('MongoDB Connected'))
 //   .catch(err => console.log('MongoDB Error:', err));
 // MongoDB Connection (Atlas)
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 
 const MONGO_URI = process.env.MONGO_URI;
 
